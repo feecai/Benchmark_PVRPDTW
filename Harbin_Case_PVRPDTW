@@ -18,7 +18,7 @@
     "lTW": 173.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 2
+    "service_frequency": 2
   },
   "2": {
     "nodeType": 0,
@@ -29,7 +29,7 @@
     "lTW": 181.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 2
+    "service_frequency": 2
   },
   "3": {
     "nodeType": 0,
@@ -40,7 +40,7 @@
     "lTW": 193.0,
     "service_time": 0.0,
     "drone_enable": 0,
-    "count": 2
+    "service_frequency": 2
   },
   "4": {
     "nodeType": 0,
@@ -51,7 +51,7 @@
     "lTW": 487.0,
     "service_time": 0.0,
     "drone_enable": 0,
-    "count": 2
+    "service_frequency": 2
   },
   "5": {
     "nodeType": 0,
@@ -62,7 +62,7 @@
     "lTW": 685.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 3
+    "service_frequency": 3
   },
   "6": {
     "nodeType": 0,
@@ -73,7 +73,7 @@
     "lTW": 439.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 3
+    "service_frequency": 3
   },
   "7": {
     "nodeType": 0,
@@ -84,7 +84,7 @@
     "lTW": 219.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 3
+    "service_frequency": 3
   },
   "8": {
     "nodeType": 0,
@@ -95,7 +95,7 @@
     "lTW": 163.0,
     "service_time": 0.0,
     "drone_enable": 0,
-    "count": 3
+    "service_frequency": 3
   },
   "9": {
     "nodeType": 0,
@@ -106,7 +106,7 @@
     "lTW": 467.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 3
+    "service_frequency": 3
   },
   "10": {
     "nodeType": 0,
@@ -117,7 +117,7 @@
     "lTW": 79.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 3
+    "service_frequency": 3
   },
   "11": {
     "nodeType": 0,
@@ -128,7 +128,7 @@
     "lTW": 462.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 2
+    "service_frequency": 2
   },
   "12": {
     "nodeType": 0,
@@ -139,7 +139,7 @@
     "lTW": 152.0,
     "service_time": 0.0,
     "drone_enable": 0,
-    "count": 3
+    "service_frequency": 3
   },
   "13": {
     "nodeType": 0,
@@ -150,7 +150,7 @@
     "lTW": 624.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 3
+    "service_frequency": 3
   },
   "14": {
     "nodeType": 0,
@@ -161,7 +161,7 @@
     "lTW": 458.0,
     "service_time": 0.0,
     "drone_enable": 0,
-    "count": 3
+    "service_frequency": 3
   },
   "15": {
     "nodeType": 0,
@@ -172,7 +172,7 @@
     "lTW": 286.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 2
+    "service_frequency": 2
   },
   "16": {
     "nodeType": 0,
@@ -183,7 +183,7 @@
     "lTW": 79.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 3
+    "service_frequency": 3
   },
   "17": {
     "nodeType": 0,
@@ -194,7 +194,7 @@
     "lTW": 448.0,
     "service_time": 0.0,
     "drone_enable": 0,
-    "count": 2
+    "service_frequency": 2
   },
   "18": {
     "nodeType": 0,
@@ -205,7 +205,7 @@
     "lTW": 311.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 3
+    "service_frequency": 3
   },
   "19": {
     "nodeType": 0,
@@ -216,7 +216,7 @@
     "lTW": 23.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 3
+    "service_frequency": 3
   },
   "20": {
     "nodeType": 0,
@@ -227,7 +227,7 @@
     "lTW": 226.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 2
+    "service_frequency": 2
   },
   "21": {
     "nodeType": 0,
@@ -238,7 +238,7 @@
     "lTW": 216.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 3
+    "service_frequency": 3
   },
   "22": {
     "nodeType": 0,
@@ -249,7 +249,7 @@
     "lTW": 238.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 3
+    "service_frequency": 3
   },
   "23": {
     "nodeType": 0,
@@ -260,7 +260,7 @@
     "lTW": 231.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 2
+    "service_frequency": 2
   },
   "24": {
     "nodeType": 0,
@@ -271,7 +271,7 @@
     "lTW": 239.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 3
+    "service_frequency": 3
   },
   "25": {
     "nodeType": 0,
@@ -282,7 +282,7 @@
     "lTW": 413.0,
     "service_time": 0.0,
     "drone_enable": 0,
-    "count": 3
+    "service_frequency": 3
   },
   "26": {
     "nodeType": 0,
@@ -293,7 +293,7 @@
     "lTW": 438.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 2
+    "service_frequency": 2
   },
   "27": {
     "nodeType": 0,
@@ -304,7 +304,7 @@
     "lTW": 392.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 2
+    "service_frequency": 2
   },
   "28": {
     "nodeType": 0,
@@ -315,7 +315,7 @@
     "lTW": 179.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 3
+    "service_frequency": 3
   },
   "29": {
     "nodeType": 0,
@@ -326,7 +326,7 @@
     "lTW": 764.0,
     "service_time": 0.0,
     "drone_enable": 0,
-    "count": 3
+    "service_frequency": 3
   },
   "30": {
     "nodeType": 0,
@@ -337,7 +337,7 @@
     "lTW": 69.0,
     "service_time": 0.0,
     "drone_enable": 0,
-    "count": 3
+    "service_frequency": 3
   },
   "31": {
     "nodeType": 0,
@@ -348,7 +348,7 @@
     "lTW": 308.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 2
+    "service_frequency": 2
   },
   "32": {
     "nodeType": 0,
@@ -359,7 +359,7 @@
     "lTW": 211.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 2
+    "service_frequency": 2
   },
   "33": {
     "nodeType": 0,
@@ -370,7 +370,7 @@
     "lTW": 247.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 3
+    "service_frequency": 3
   },
   "34": {
     "nodeType": 0,
@@ -381,7 +381,7 @@
     "lTW": 415.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 3
+    "service_frequency": 3
   },
   "35": {
     "nodeType": 0,
@@ -392,7 +392,7 @@
     "lTW": 387.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 3
+    "service_frequency": 3
   },
   "36": {
     "nodeType": 0,
@@ -403,7 +403,7 @@
     "lTW": 229.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 2
+    "service_frequency": 2
   },
   "37": {
     "nodeType": 0,
@@ -414,7 +414,7 @@
     "lTW": 59.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 3
+    "service_frequency": 3
   },
   "38": {
     "nodeType": 0,
@@ -425,7 +425,7 @@
     "lTW": 413.0,
     "service_time": 0.0,
     "drone_enable": 0,
-    "count": 2
+    "service_frequency": 2
   },
   "39": {
     "nodeType": 0,
@@ -436,7 +436,7 @@
     "lTW": 198.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 3
+    "service_frequency": 3
   },
   "40": {
     "nodeType": 0,
@@ -447,7 +447,7 @@
     "lTW": 248.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 2
+    "service_frequency": 2
   },
   "41": {
     "nodeType": 0,
@@ -458,7 +458,7 @@
     "lTW": 93.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 3
+    "service_frequency": 3
   },
   "42": {
     "nodeType": 0,
@@ -469,7 +469,7 @@
     "lTW": 444.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 3
+    "service_frequency": 3
   },
   "43": {
     "nodeType": 0,
@@ -480,7 +480,7 @@
     "lTW": 491.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 2
+    "service_frequency": 2
   },
   "44": {
     "nodeType": 0,
@@ -491,7 +491,7 @@
     "lTW": 190.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 3
+    "service_frequency": 3
   },
   "45": {
     "nodeType": 0,
@@ -502,7 +502,7 @@
     "lTW": 69.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 2
+    "service_frequency": 2
   },
   "46": {
     "nodeType": 0,
@@ -513,7 +513,7 @@
     "lTW": 512.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 3
+    "service_frequency": 3
   },
   "47": {
     "nodeType": 0,
@@ -524,7 +524,7 @@
     "lTW": 498.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 2
+    "service_frequency": 2
   },
   "48": {
     "nodeType": 0,
@@ -535,7 +535,7 @@
     "lTW": 388.0,
     "service_time": 0.0,
     "drone_enable": 0,
-    "count": 3
+    "service_frequency": 3
   },
   "49": {
     "nodeType": 0,
@@ -546,7 +546,7 @@
     "lTW": 278.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 3
+    "service_frequency": 3
   },
   "50": {
     "nodeType": 0,
@@ -557,7 +557,7 @@
     "lTW": 535.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 3
+    "service_frequency": 3
   },
   "51": {
     "nodeType": 0,
@@ -568,7 +568,7 @@
     "lTW": 312.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 3
+    "service_frequency": 3
   },
   "52": {
     "nodeType": 0,
@@ -579,7 +579,7 @@
     "lTW": 272.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 3
+    "service_frequency": 3
   },
   "53": {
     "nodeType": 0,
@@ -590,7 +590,7 @@
     "lTW": 115.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 3
+    "service_frequency": 3
   },
   "54": {
     "nodeType": 0,
@@ -601,7 +601,7 @@
     "lTW": 565.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 3
+    "service_frequency": 3
   },
   "55": {
     "nodeType": 0,
@@ -612,7 +612,7 @@
     "lTW": 468.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 3
+    "service_frequency": 3
   },
   "56": {
     "nodeType": 0,
@@ -623,7 +623,7 @@
     "lTW": 244.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 2
+    "service_frequency": 2
   },
   "57": {
     "nodeType": 0,
@@ -634,7 +634,7 @@
     "lTW": 105.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 4
+    "service_frequency": 4
   },
   "58": {
     "nodeType": 0,
@@ -645,7 +645,7 @@
     "lTW": 27.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 2
+    "service_frequency": 2
   },
   "59": {
     "nodeType": 0,
@@ -656,7 +656,7 @@
     "lTW": 326.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 2
+    "service_frequency": 2
   },
   "60": {
     "nodeType": 0,
@@ -667,7 +667,7 @@
     "lTW": 134.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 3
+    "service_frequency": 3
   },
   "61": {
     "nodeType": 0,
@@ -678,7 +678,7 @@
     "lTW": 125.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 3
+    "service_frequency": 3
   },
   "62": {
     "nodeType": 0,
@@ -689,7 +689,7 @@
     "lTW": 362.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 3
+    "service_frequency": 3
   },
   "63": {
     "nodeType": 0,
@@ -700,7 +700,7 @@
     "lTW": 312.0,
     "service_time": 0.0,
     "drone_enable": 0,
-    "count": 3
+    "service_frequency": 3
   },
   "64": {
     "nodeType": 0,
@@ -711,7 +711,7 @@
     "lTW": 364.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 3
+    "service_frequency": 3
   },
   "65": {
     "nodeType": 0,
@@ -722,7 +722,7 @@
     "lTW": 250.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 3
+    "service_frequency": 3
   },
   "66": {
     "nodeType": 0,
@@ -733,7 +733,7 @@
     "lTW": 188.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 3
+    "service_frequency": 3
   },
   "67": {
     "nodeType": 0,
@@ -744,7 +744,7 @@
     "lTW": 454.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 3
+    "service_frequency": 3
   },
   "68": {
     "nodeType": 0,
@@ -755,7 +755,7 @@
     "lTW": 509.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 3
+    "service_frequency": 3
   },
   "69": {
     "nodeType": 0,
@@ -766,7 +766,7 @@
     "lTW": 340.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 2
+    "service_frequency": 2
   },
   "70": {
     "nodeType": 0,
@@ -777,7 +777,7 @@
     "lTW": 87.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 2
+    "service_frequency": 2
   },
   "71": {
     "nodeType": 0,
@@ -788,7 +788,7 @@
     "lTW": 90.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 2
+    "service_frequency": 2
   },
   "72": {
     "nodeType": 0,
@@ -799,7 +799,7 @@
     "lTW": 114.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 4
+    "service_frequency": 4
   },
   "73": {
     "nodeType": 0,
@@ -810,7 +810,7 @@
     "lTW": 44.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 3
+    "service_frequency": 3
   },
   "74": {
     "nodeType": 0,
@@ -821,7 +821,7 @@
     "lTW": 113.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 2
+    "service_frequency": 2
   },
   "75": {
     "nodeType": 0,
@@ -832,7 +832,7 @@
     "lTW": 590.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 3
+    "service_frequency": 3
   },
   "76": {
     "nodeType": 0,
@@ -843,7 +843,7 @@
     "lTW": 202.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 2
+    "service_frequency": 2
   },
   "77": {
     "nodeType": 0,
@@ -854,7 +854,7 @@
     "lTW": 134.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 3
+    "service_frequency": 3
   },
   "78": {
     "nodeType": 0,
@@ -865,7 +865,7 @@
     "lTW": 414.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 3
+    "service_frequency": 3
   },
   "79": {
     "nodeType": 0,
@@ -876,7 +876,7 @@
     "lTW": 117.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 2
+    "service_frequency": 2
   },
   "80": {
     "nodeType": 0,
@@ -887,7 +887,7 @@
     "lTW": 719.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 3
+    "service_frequency": 3
   },
   "81": {
     "nodeType": 1,
@@ -898,7 +898,7 @@
     "lTW": 0.0,
     "service_time": 0.0,
     "drone_enable": 0,
-    "count": 3
+    "service_frequency": 3
   },
   "82": {
     "nodeType": 0,
@@ -909,7 +909,7 @@
     "lTW": 215.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 3
+    "service_frequency": 3
   },
   "83": {
     "nodeType": 0,
@@ -920,7 +920,7 @@
     "lTW": 120.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 3
+    "service_frequency": 3
   },
   "84": {
     "nodeType": 0,
@@ -931,7 +931,7 @@
     "lTW": 120.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 2
+    "service_frequency": 2
   },
   "85": {
     "nodeType": 0,
@@ -942,7 +942,7 @@
     "lTW": 141.0,
     "service_time": 0.0,
     "drone_enable": 0,
-    "count": 2
+    "service_frequency": 2
   },
   "86": {
     "nodeType": 0,
@@ -953,7 +953,7 @@
     "lTW": 241.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 3
+    "service_frequency": 3
   },
   "87": {
     "nodeType": 0,
@@ -964,7 +964,7 @@
     "lTW": 233.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 2
+    "service_frequency": 2
   },
   "88": {
     "nodeType": 0,
@@ -975,7 +975,7 @@
     "lTW": 96.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 2
+    "service_frequency": 2
   },
   "89": {
     "nodeType": 0,
@@ -986,7 +986,7 @@
     "lTW": 90.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 3
+    "service_frequency": 3
   },
   "90": {
     "nodeType": 0,
@@ -997,7 +997,7 @@
     "lTW": 235.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 2
+    "service_frequency": 2
   },
   "91": {
     "nodeType": 0,
@@ -1008,7 +1008,7 @@
     "lTW": 26.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 3
+    "service_frequency": 3
   },
   "92": {
     "nodeType": 0,
@@ -1019,7 +1019,7 @@
     "lTW": 120.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 3
+    "service_frequency": 3
   },
   "93": {
     "nodeType": 0,
@@ -1030,7 +1030,7 @@
     "lTW": 391.0,
     "service_time": 0.0,
     "drone_enable": 0,
-    "count": 2
+    "service_frequency": 2
   },
   "94": {
     "nodeType": 0,
@@ -1041,7 +1041,7 @@
     "lTW": 168.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 3
+    "service_frequency": 3
   },
   "95": {
     "nodeType": 0,
@@ -1052,7 +1052,7 @@
     "lTW": 206.0,
     "service_time": 0.0,
     "drone_enable": 0,
-    "count": 3
+    "service_frequency": 3
   },
   "96": {
     "nodeType": 0,
@@ -1063,7 +1063,7 @@
     "lTW": 306.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 2
+    "service_frequency": 2
   },
   "97": {
     "nodeType": 0,
@@ -1074,7 +1074,7 @@
     "lTW": 236.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 2
+    "service_frequency": 2
   },
   "98": {
     "nodeType": 0,
@@ -1085,7 +1085,7 @@
     "lTW": 55.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 3
+    "service_frequency": 3
   },
   "99": {
     "nodeType": 0,
@@ -1096,7 +1096,7 @@
     "lTW": 120.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 2
+    "service_frequency": 2
   },
   "100": {
     "nodeType": 0,
@@ -1107,6 +1107,6 @@
     "lTW": 73.0,
     "service_time": 0.0,
     "drone_enable": 1,
-    "count": 2
+    "service_frequency": 2
   }
 }
