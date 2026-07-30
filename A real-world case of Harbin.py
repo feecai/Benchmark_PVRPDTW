@@ -1,0 +1,504 @@
+#################################################案例####################################################
+# 目标：可视化卡车和无人机的路径规划结果。根据最终的每个周期的卡车的路径规划结果以及无人机路径规划结果进行可视化。#https://blog.csdn.net/qq_38181886/article/details/135009642
+#1.已知仓库节点和客户节点坐标POSITION，并通过GOaMEA等算法计算现有卡车无人机的路径规划方案ROUTE。
+# #实例：(输出格式和内容)
+# p.X=GOaMEA_chorm:
+#         [[array([ 0,  6,  8,  2, 11,  1,  3, 10, 16,  0]), array([[ 2,  1,  2,  1,  3,  0,  3,  5,  0,  5,  8],
+#        [ 5, 14, 15, 18,  7, 17,  4, 12,  9, 13, 19],
+#        [ 3,  2,  3,  2,  5,  1,  5,  9,  1,  8,  9],
+#        [ 0,  1,  1,  0,  0,  1,  1,  1,  0,  0,  0]])],
+#        [array([ 0, 16, 19,  1,  2, 13, 20, 17, 14,  4,  6,  0]), array([[ 1,  2,  3,  7,  1,  8,  8,  7,  6,  5,  4],
+#        [ 8, 21, 10, 18,  3,  5,  7, 12,  9, 11, 15],
+#        [ 2,  3,  4,  8,  7,  9,  9,  8,  7,  6,  5],
+#        [ 1,  1,  1,  0,  0,  0,  1,  1,  1,  1,  1]])],
+#        [array([ 0,  2, 18, 19,  7, 23, 27,  6, 12, 11,  8, 21, 15, 20, 13,  3,  0]), array([[ 1,  2,  8,  9, 10, 12,  1, 12,  4, 13, 13,  2,  4],
+#        [16, 28, 17, 14, 24, 26,  5, 25,  1, 10, 22,  4,  9],
+#        [ 2,  4,  9, 10, 12, 13,  2, 13, 12, 15, 15,  4,  6],
+#        [ 0,  0,  0,  0,  0,  0,  1,  1,  1,  0,  1,  1,  0]])],
+#        [array([ 0, 32, 19, 15, 14, 11, 12, 10, 25, 21, 13,  7, 31,  8,  5,  9, 26,16, 30,  0]), array([[16,  5,  9,  3, 12, 14,  5,  8,  2,  4, 14, 11,  1,  2],
+#        [29,  6, 17,  3, 24, 23,  2,  1, 27, 22, 18,  4, 28, 20],
+#        [17, 14, 11,  4, 13, 15,  6,  9,  3,  5, 17, 12,  2,  5],
+#        [ 0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  1,  0,  1,  1]])]]
+#         s_truck  = p.X[0][0]
+#         s_drone  = p.X[0][1]
+#         s_truck1 = p.X[1][0]
+#         s_drone1 = p.X[1][1]
+#         s_truck2 = p.X[2][0]
+#         s_drone2 = p.X[2][1]
+#         s_truck3 = p.X[3][0]
+#         s_drone3 = p.X[3][1]
+#2.解析卡车无人机的chorm,表示路线和节点。其中无人机的路径使用折线的方法表示，卡车的路径调用高德地图中的路径规划算法表示。不同的无人机路径使用不同颜色的虚线，不同的卡车路径使用不同颜色的实线表示，仓库使用红色的标记、客户使用蓝色的标。
+####################################################案例##################################################
+import folium
+from folium.plugins import AntPath
+from folium import plugins
+import numpy as np
+import pandas as pd
+import requests
+
+def get_routes(start, end, mode, gaode_key, waypoint):
+    # url = f'https://restapi.amap.com/v3/direction/driving?origin={start}&destination={end}&strategy={mode}&waypoints={waypoint}&key={gaode_key}'# https://restapi.amap.com/v5/direction/driving?
+    url = f'https://restapi.amap.com/v3/direction/driving?origin={start}&destination={end}&strategy={mode}&waypoints={waypoint}&key={gaode_key}'
+    response = requests.get(url)
+    data = response.json()
+    if data['status'] == '1':
+        routes = data['route']['paths'][0]['steps']
+        coord3 = data['route']['paths'][0]['distance']  # distance=方案距离，单位：米
+        return routes ,coord3
+    else:
+        print('未获取到相关路径')
+        return None
+###########################################卡车无人机路径规划输入#############################################
+#100个客户的真实位置包含仓库节点
+POSITION=[[45.760696, 126.629834], #仓库节点
+          [45.768342, 126.648634], [45.776954, 126.635229], [45.762764, 126.641461], [45.771705, 126.618766], [45.771049, 126.648634], [45.766538, 126.649458], [45.768588, 126.622882], [45.771623, 126.648399], [45.766866, 126.650046],[45.769573, 126.627233],
+          [45.777857, 126.682266], [45.773756, 126.677445], [45.772443, 126.680032], [45.774739, 126.674622], [45.77318, 126.6718], [45.780644, 126.683324], [45.775969, 126.670977], [45.772524, 126.682384], [45.769571, 126.67768],[45.774492, 126.667802],
+          [45.770227, 126.677327], [45.757184, 126.66204], [45.757102, 126.670977], [45.763173, 126.663569], [45.756938, 126.661687], [45.757758, 126.68403], [45.759645, 126.652985], [45.757348, 126.676622], [45.750538, 126.65863],[45.772278, 126.665803],
+          [45.733801, 126.631737], [45.724865, 126.657341], [45.735958, 126.654251], [45.744893, 126.646305], [45.713615, 126.658886], [45.725635, 126.620365], [45.739601, 126.651267], [45.746995, 126.637583], [45.72142, 126.663188],[45.734979, 126.623015],
+          [45.715409, 126.674887], [45.732668, 126.629417], [45.73652, 126.652152], [45.727583, 126.618159], [45.729278, 126.651158], [45.728232, 126.641752], [45.731163, 126.623951], [45.722488, 126.66052], [45.713685, 126.659306],[45.734949, 126.627621],
+          [45.733971, 126.627446], [45.720075, 126.659699], [45.727421, 126.617745], [45.707428, 126.666891], [45.721563, 126.636258], [45.709753, 126.662229], [45.712729, 126.661297], [45.722214, 126.654505], [45.719951, 126.643136], [45.725556, 126.656457],
+          [45.728995, 126.656457], [45.719314, 126.668683], [45.712306, 126.677259], [45.728549, 126.641676], [45.709805, 126.623131], [45.737065, 126.628268], [45.745312, 126.635461], [45.745013, 126.63803], [45.735805, 126.621774],[45.736927, 126.653116],
+          [45.754338, 126.605488], [45.746549, 126.594024], [45.737284, 126.603075], [45.740232, 126.608505], [45.744233, 126.595532], [45.75241, 126.631924], [45.767581, 126.602828], [45.746581, 126.625174], [45.732698, 126.602377],[45.738557, 126.573556],
+          [45.733438, 126.588293], [45.732443, 126.582181], [45.737467, 126.584014], [45.732978, 126.568785], [45.737505, 126.567094], [45.73542, 126.578966], [45.739463, 126.566375], [45.740795, 126.580876], [45.739934, 126.571056],[45.713167, 126.600009],
+          [45.718718, 126.577188], [45.735076, 126.579753], [45.753687, 126.629981], [45.749173, 126.598006], [45.751979, 126.633929], [45.75976, 126.60488],
+          [45.752691, 126.606789], [45.765104, 126.605138], [45.7518, 126.611068], [45.750229, 126.612345]]
+#客户服务频次
+count_list = [
+    2, 2, 2, 2, 3, 3, 3, 3, 3, 3,
+    2, 3, 3, 3, 2, 3, 2, 3, 3, 2,
+    3, 3, 2, 3, 3, 2, 2, 3, 3, 3,
+    2, 2, 3, 3, 3, 2, 3, 2, 3, 2,
+    3, 3, 2, 3, 2, 3, 2, 3, 3, 3,
+    3, 3, 3, 3, 3, 2, 4, 2, 2, 3,
+    3, 3, 3, 3, 3, 3, 3, 3, 2, 2,
+    2, 4, 3, 2, 3, 2, 3, 3, 2, 3,
+    3, 3, 3, 2, 2, 3, 2, 2, 3, 2,
+    3, 3, 2, 3, 3, 2, 2, 3, 2, 2
+]
+#客户服务周期分配结果，由优化器GOaMEA给出
+insert0_list_0=[0,1, 4, 6, 7, 8, 9, 13, 15, 18, 19, 21, 24, 25, 26, 27, 30, 31, 33, 36, 39, 40, 41, 43, 45, 47, 48, 51, 53, 55, 57, 61, 63, 64, 66, 67, 68, 72, 73, 74, 77, 79, 82, 86, 87, 89, 91, 92, 94, 96, 99]
+insert0_list_1=[0,2, 5, 6, 8, 10, 11, 12, 14, 15, 16, 18, 20, 22, 23, 24, 25, 28, 29, 30, 32, 34, 35, 37, 39, 42, 43, 44, 46, 48, 49, 50, 52, 53, 54, 55, 56, 57, 58, 59, 60, 62, 64, 65, 66, 70, 71, 72, 73, 75, 76, 77, 78, 80, 81, 83, 84, 86, 88, 90, 92, 93, 95, 97, 98]
+insert0_list_2=[0,2, 3, 4, 5, 7, 8, 9, 10, 12, 13, 14, 16, 17, 18, 19, 21, 22, 23, 25, 27, 28, 29, 33, 34, 35, 36, 37, 38, 40, 41, 42, 44, 45, 46, 48, 49, 50, 51, 52, 53, 54, 56, 57, 60, 61, 62, 63, 65, 67, 68, 69, 71, 72, 75, 76, 78, 79, 80, 81, 82, 83, 85, 87, 88, 89, 91, 94, 95, 96, 98, 100]
+insert0_list_3=[0,1, 3, 5, 6, 7, 9, 10, 11, 12, 13, 14, 16, 17, 19, 20, 21, 22, 24, 26, 28, 29, 30, 31, 32, 33, 34, 35, 37, 38, 39, 41, 42, 44, 46, 47, 49, 50, 51, 52, 54, 55, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 72, 73, 74, 75, 77, 78, 80, 81, 82, 83, 84, 85, 86, 89, 90, 91, 92, 93, 94, 95, 97, 98, 99, 100]
+#4个周期性车辆无人机协同配送路径规划结果，由优化器GOaMEA给出
+GOaMEA_chorm=[
+            [[ 0, 16, 10, 45, 37, 38, 41, 42, 47, 43, 44, 48, 4, 49, 40, 2, 5, 6, 15, 13, 12, 8, 11, 7, 9, 14, 32, 26, 31, 24, 33, 29, 17, 21, 25, 28, 35, 36, 0],#周期1的卡车路线
+             [[0, 15, 17, 18, 29, 30, 32, 33, 0, 27, 28, 26, 7],# 无人机起点
+              [50, 3, 1, 23, 18, 27, 34, 19, 39, 22, 30, 20, 46],# 无人机服务客户编号
+              [15, 17, 18, 29, 30, 32, 33, 35, 4, 28, 29, 27, 8],# 无人机终点
+              [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1]]],   # 无人机终点
+            [[0, 23, 45, 19, 10, 6, 11, 7, 8, 14, 16, 15, 3, 4, 18, 26, 40, 20, 29, 32, 24, 41, 34, 36, 30, 22, 39, 35, 28, 42, 25, 31, 44, 61, 50, 62, 63, 46, 51, 48, 49, 54, 55, 58, 60, 57, 27, 33, 0],  # 周期2的卡车路线
+             [[13, 14, 15, 33, 0, 13, 39, 37, 24, 46, 26, 16, 7, 12, 3, 44, 43],  # 无人机起点
+              [13, 21, 1, 5, 52, 17, 47, 64, 37, 59, 43, 38, 9, 2, 12, 56, 53],  # 无人机服务客户编号
+              [14, 15, 33, 48, 13, 14, 40, 38, 25, 47, 27, 17, 8, 13, 7, 45, 44],  # 无人机终点
+              [0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1]]],  # 无人机编号
+               [[ 0, 8, 53, 70, 27, 43, 30, 71, 61, 64, 59, 57, 40, 26, 29, 32, 38, 31, 34, 33, 45, 44, 35, 39, 49, 25, 42, 41, 46, 47, 21, 18, 17, 19, 22, 20, 7, 4, 6, 2, 68, 36, 28, 24, 23, 56, 52, 69, 67, 58, 65, 62, 48, 3, 13, 11, 9, 10, 16, 12, 14, 15, 0],                                             #周期3的卡车路线
+               [[ 0, 40, 53, 0, 14, 16, 48, 53, 52, 51],                                                                         #无人机起点
+                [ 66, 5, 60, 51, 37, 54, 50, 1, 55, 63],                                                                         #无人机服务客户编号
+                [40, 53, 62, 14, 16, 48, 51, 62, 53, 52],                                                                         #无人机终点
+                [ 0, 0, 0, 1, 1, 1, 1, 1, 1, 1]]],                                                                       #无人机编号
+               [[ 0, 79, 58, 56, 22, 14, 12, 31, 42, 36, 24, 39, 47, 27, 45, 46, 25, 55, 26, 29, 75, 73, 61, 35, 32, 23, 49, 44, 41, 33, 50, 70, 57, 59, 74, 76, 60,  5,  2,  6,  3, 15, 13, 11,  9, 16, 10,  8, 19, 20, 17, 18, 21, 40, 48, 30, 63, 64, 72, 68, 65, 62, 67, 66,  0],                  #周期4的卡车路线
+                [[0, 37, 39, 40,  0, 19, 24, 25, 26, 27, 29, 32, 52, 35, 57, 56],                                                                                                     #无人机起点
+                [ 7,  4,  1, 52, 53, 51, 38, 34, 43, 37, 54, 78, 28, 77, 71, 69],                                                                                                     #无人机服务客户编号
+                [37, 39, 40, 64, 19, 24, 25, 26, 27, 29, 32, 35, 54, 36, 63, 57],                                                                                                     #无人机终点
+                [ 0,  0,  0,  0,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1]]]]                                                                                                   #无人机编号
+Drone_route=[]
+route=[]
+for i in range(len(GOaMEA_chorm[0][1][0])):
+    drone_route = []
+    drone_route.append(POSITION[insert0_list_0[GOaMEA_chorm[0][0][GOaMEA_chorm[0][1][0][i]]]])
+    drone_route.append(POSITION[insert0_list_0[GOaMEA_chorm[0][1][1][i]]])
+    drone_route.append(POSITION[insert0_list_0[GOaMEA_chorm[0][0][GOaMEA_chorm[0][1][2][i]]]])
+    route.append(insert0_list_0[GOaMEA_chorm[0][1][1][i]])
+    Drone_route.append(drone_route)
+# print("Drone_route:",Drone_route)
+print("route:",route)
+Drone_route1=[]
+route1=[]
+for i in range(len(GOaMEA_chorm[1][1][0])):
+    drone_route1 = []
+    drone_route1.append(POSITION[insert0_list_1[GOaMEA_chorm[1][0][GOaMEA_chorm[1][1][0][i]]]])
+    drone_route1.append(POSITION[insert0_list_1[GOaMEA_chorm[1][1][1][i]]])
+    drone_route1.append(POSITION[insert0_list_1[GOaMEA_chorm[1][0][GOaMEA_chorm[1][1][2][i]]]])
+    route1.append(insert0_list_1[GOaMEA_chorm[1][1][1][i]])
+    Drone_route1.append(drone_route1)
+# print("Drone_route1:",Drone_route1)
+print("route1:",route1)
+Drone_route2=[]
+route2=[]
+for i in range(len(GOaMEA_chorm[2][1][0])):
+    drone_route2 = []
+    drone_route2.append(POSITION[insert0_list_2[GOaMEA_chorm[2][0][GOaMEA_chorm[2][1][0][i]]]])
+    drone_route2.append(POSITION[insert0_list_2[GOaMEA_chorm[2][1][1][i]]])
+    drone_route2.append(POSITION[insert0_list_2[GOaMEA_chorm[2][0][GOaMEA_chorm[2][1][2][i]]]])
+    route2.append(insert0_list_2[GOaMEA_chorm[2][1][1][i]])
+    Drone_route2.append(drone_route2)
+# print("Drone_route2:",Drone_route2)
+print("route2:",route2)
+Drone_route3=[]
+route3=[]
+for i in range(len(GOaMEA_chorm[3][1][0])):
+    drone_route3 = []
+    drone_route3.append(POSITION[insert0_list_3[GOaMEA_chorm[3][0][GOaMEA_chorm[3][1][0][i]]]])
+    drone_route3.append(POSITION[insert0_list_3[GOaMEA_chorm[3][1][1][i]]])
+    drone_route3.append(POSITION[insert0_list_3[GOaMEA_chorm[3][0][GOaMEA_chorm[3][1][2][i]]]])
+    route3.append(insert0_list_3[GOaMEA_chorm[3][1][1][i]])
+    Drone_route3.append(drone_route3)
+# print("Drone_route3:",Drone_route3)
+print("route3:",route3)
+strategy = 2 #规划策略见 https://lbs.amap.com/api/webservice/guide/api/direction#driving
+gaode_key = '213c2cfd3389cd8c4ce2d3ceb29c8ebc' #调用高德地图key
+df = pd.read_excel('总数据.xlsx', sheet_name='一区')#记录客户真实数据，包括位置，包裹重量，时间窗，服务频次等
+jwd = df['经纬度'].tolist() #①初始化参数，利用'总数据.xlsx'-经纬度，生成jwd供应商经纬度。
+P =[]
+P1=[]
+P2=[]
+P3=[]
+
+waypoint = ''       #路径点
+lat_and_lon = []    #储存详细坐标经纬度
+Lon = []            # 储存经度
+Lat = []            # 储存纬度
+tolls    = 0
+duration = 0
+
+waypoint_1 = ''       #路径点
+lat_and_lon_1 = []    #储存详细坐标经纬度
+Lon_1 = []            # 储存经度
+Lat_1 = []            # 储存纬度
+tolls_1    = 0
+duration_1 = 0
+
+waypoint_2 = ''       #路径点
+lat_and_lon_2 = []    #储存详细坐标经纬度
+Lon_2 = []            # 储存经度
+Lat_2 = []            # 储存纬度
+tolls_2    = 0
+duration_2 = 0
+
+waypoint_3 = ''       #路径点
+lat_and_lon_3 = []    #储存详细坐标经纬度
+Lon_3 = []            # 储存经度
+Lat_3 = []            # 储存纬度
+tolls_3    = 0
+duration_3 = 0
+a=[]
+a1=[]
+a2=[]
+a3=[]
+for i in range(len(GOaMEA_chorm[0][0])):
+    a.append(insert0_list_0[GOaMEA_chorm[0][0][i]])
+    P.append(jwd[insert0_list_0[GOaMEA_chorm[0][0][i]]])
+for i in range(len(GOaMEA_chorm[1][0])):
+    a1.append(insert0_list_1[GOaMEA_chorm[1][0][i]])
+    P1.append(jwd[insert0_list_1[GOaMEA_chorm[1][0][i]]])
+for i in range(len(GOaMEA_chorm[2][0])):
+    a2.append(insert0_list_2[GOaMEA_chorm[2][0][i]])
+    P2.append(jwd[insert0_list_2[GOaMEA_chorm[2][0][i]]])
+for i in range(len(GOaMEA_chorm[3][0])):
+    a3.append(insert0_list_3[GOaMEA_chorm[3][0][i]])
+    P3.append(jwd[insert0_list_3[GOaMEA_chorm[3][0][i]]])
+
+print("Truck_route:",a)
+print("Truck1_route:",a1)
+print("Truck2_route:",a2)
+print("Truck3_route:",a3)
+
+print("P:" ,P )
+print("P1:",P1)
+print("P2:",P2)
+print("P3:",P3)
+
+######################################################第一个周期卡车路径规划方案################################################################
+for i in range(0, len(P), 16):#②利用jwd,获得lat_and_lon.
+    group = P[i:i + 16]
+    string = ';'.join(map(str, group))
+    start = group[0]
+    end = group[-1]
+    waypoint = string
+    routes,coord3 = get_routes(start,end, strategy, gaode_key, waypoint)# 获取路线规划
+    if routes:
+        for i, step in enumerate(routes):
+            lat_and_lon.append(step["polyline"])
+            tolls += int(step["tolls"])
+            duration += int(step["duration"])
+    else:
+        print('无法获取路线规划。')
+for item in lat_and_lon:#③利用lat_and_lon,获得Lat和Lon.# 提取坐标点并全添加到 Lon 和 Lat 列表中
+    points = item.split(';')
+    for point in points:
+        coords = point.split(',')
+        Lon.append(float(coords[0]))
+        Lat.append(float(coords[1]))
+print("Lon:",Lon)
+print("Lat:",Lat)
+######################################################第二个周期卡车路径规划方案################################################################
+for i in range(0, len(P1), 16):#②利用jwd,获得lat_and_lon.
+    group1 = P1[i:i + 16]
+    string1 = ';'.join(map(str, group1))
+    start1 = group1[0]
+    end1 = group1[-1]
+    waypoint_1 = string1
+    routes_1,coord3_1 = get_routes(start1,end1, strategy, gaode_key, waypoint_1)# 获取路线规划
+    if routes_1:
+        for i, step in enumerate(routes_1):
+            lat_and_lon_1.append(step["polyline"])
+            tolls_1 += int(step["tolls"])
+            duration_1 += int(step["duration"])
+    else:
+        print('无法获取路线规划。')
+for item in lat_and_lon_1:#③利用lat_and_lon,获得Lat和Lon.# 提取坐标点并全添加到 Lon 和 Lat 列表中
+    points = item.split(';')
+    for point in points:
+        coords = point.split(',')
+        Lon_1.append(float(coords[0]))
+        Lat_1.append(float(coords[1]))
+print("Lon_1:",Lon_1)
+print("Lat_1:",Lat_1)
+######################################################第三个周期卡车路径规划方案################################################################
+for i in range(0, len(P2), 16):#②利用jwd,获得lat_and_lon.
+    group2 = P2[i:i + 16]
+    string2 = ';'.join(map(str, group2))
+    start2 = group2[0]
+    end2 = group2[-1]
+    waypoint_2 = string2
+    routes_2,coord3_2 = get_routes(start2,end2, strategy, gaode_key, waypoint_2)# 获取路线规划
+    if routes_2:
+        for i, step in enumerate(routes_2):
+            lat_and_lon_2.append(step["polyline"])
+            tolls_2 += int(step["tolls"])
+            duration_2 += int(step["duration"])
+    else:
+        print('无法获取路线规划。')
+for item in lat_and_lon_2:#③利用lat_and_lon,获得Lat和Lon.# 提取坐标点并全添加到 Lon 和 Lat 列表中
+    points = item.split(';')
+    for point in points:
+        coords = point.split(',')
+        Lon_2.append(float(coords[0]))
+        Lat_2.append(float(coords[1]))
+print("Lon_2:",Lon_2)
+print("Lat_2:",Lat_2)
+######################################################第四个周期卡车路径规划方案################################################################
+for i in range(0, len(P3), 16):#②利用jwd,获得lat_and_lon.
+    group3 = P3[i:i + 16]
+    string3 = ';'.join(map(str, group3))
+    start3 = group3[0]
+    end3 = group3[-1]
+    waypoint_3 = string3
+    routes_3,coord3_3 = get_routes(start3,end3, strategy, gaode_key, waypoint_3)# 获取路线规划
+    if routes_3:
+        for i, step in enumerate(routes_3):
+            lat_and_lon_3.append(step["polyline"])
+            tolls_3 += int(step["tolls"])
+            duration_3 += int(step["duration"])
+    else:
+        print('无法获取路线规划。')
+for item in lat_and_lon_3:#③利用lat_and_lon,获得Lat和Lon.# 提取坐标点并全添加到 Lon 和 Lat 列表中
+    points = item.split(';')
+    for point in points:
+        coords = point.split(',')
+        Lon_3.append(float(coords[0]))
+        Lat_3.append(float(coords[1]))
+print("Lon_3:",Lon_3)
+print("Lat_3:",Lat_3)
+###########################################完整卡车无人机路径规划结果###################################################
+way_lon = df['经度（lonDeg）'].tolist()
+way_lat = df['纬度（latDeg）'].tolist()
+print("way_lon:",way_lon)
+print("way_lat:",way_lat)
+del way_lon[0]
+del way_lat[0]
+
+def Map(Lat, Lon, Lat_1, Lon_1,Lat_2, Lon_2,Lat_3, Lon_3,la, lo):
+    tri = np.array(list(zip(Lat, Lon)))#④利用Lat和Lon,获得tri.
+    print("tri:",tri)
+    print("tri[-1]:",tri[-1])
+    tri_1 = np.array(list(zip(Lat_1, Lon_1)))#④利用Lat和Lon,获得tri.
+    print("tri_1:",tri_1)
+    print("tri_1[-1]:",tri_1[-1])
+    tri_2 = np.array(list(zip(Lat_2, Lon_2)))#④利用Lat和Lon,获得tri.
+    print("tri_2:",tri_2)
+    print("tri_2[-1]:",tri_2[-1])
+    tri_3 = np.array(list(zip(Lat_3, Lon_3)))#④利用Lat和Lon,获得tri.
+    print("tri_3:",tri_3)
+    print("tri_3[-1]:",tri_3[-1])
+    ####################################################画线################################################################
+    san_map = folium.Map(
+        location=[45.760696, 126.629834],
+        zoom_start=16,
+        ################################地图瓦片url####################################
+        # tiles='http://webrd04.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=7&x={x}&y={y}&z={z}',# 调用高德街道图
+        tiles='http://webst04.is.autonavi.com/appmaptile?style=6&x={x}&y={y}&z={z}', # 调用高德卫星图
+        # tiles='https://server.arcgisonline.com/arcgis/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}',# 调用中英文混合地图
+        # tiles='https://services.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}',
+        # tiles='https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+        # tiles='https://webst01.is.autonavi.com/appmaptile?style=6&x={x}&y={y}&z={z}',
+        ################################地图瓦片url####################################
+        attr='default')
+    # folium.PolyLine(tri, color='blue').add_to(san_map)#绘制所有节点之间的路径=作用等同于下面的for循环
+    ################################# 绘制卡车的路径 #################################
+    #第一周期
+    for i in range(len(tri) - 1):#⑤使用tri
+        folium.PolyLine([tri[i], tri[i + 1]], color='red',weight=4,opacity=1,
+                    # dash_array="1, 5",     # 虚线样式
+                    line_cap="round",       # 线条端点圆形
+                    line_join="round"       # 线条交点圆角
+                        ).add_to(san_map).add_child(folium.Popup("路程{}".format(tri[i])))
+    #第二周期
+    # for i in range(len(tri_1) - 1):#⑤使用tri
+    #     folium.PolyLine([tri_1[i], tri_1[i + 1]], color='white',weight=4,opacity=1,
+    #                 # dash_array="1, 5",     # 虚线样式
+    #                 line_cap="round",       # 线条端点圆形
+    #                 line_join="round"       # 线条交点圆角
+    #                     ).add_to(san_map).add_child(folium.Popup("路程{}".format(tri_1[i])))
+    #第三周期
+    # for i in range(len(tri_2) - 1):#⑤使用tri
+    #     folium.PolyLine([tri_2[i], tri_2[i + 1]], color='orange',weight=4,opacity=1,
+    #                 # dash_array="1, 5",     # 虚线样式
+    #                 line_cap="round",       # 线条端点圆形
+    #                 line_join="round"       # 线条交点圆角
+    #                     ).add_to(san_map).add_child(folium.Popup("路程{}".format(tri_2[i])))
+    #第四周期
+    # for i in range(len(tri_3) - 1):#⑤使用tri
+    #     folium.PolyLine([tri_3[i], tri_3[i + 1]], color='yellow',weight=4,opacity=1,
+    #                 # dash_array="1, 5",     # 虚线样式
+    #                 line_cap="round",       # 线条端点圆形
+    #                 line_join="round"       # 线条交点圆角
+    #                     ).add_to(san_map).add_child(folium.Popup("路程{}".format(tri_3[i])))
+    ################################# 绘制卡车的路径 #################################
+    ################################# 绘制无人机的路径 #################################
+    #第一周期
+    for i in range(len(Drone_route)):
+        folium.PolyLine(Drone_route[i], color="red", weight=4 ,dash_array="1,5",opacity=1).add_to(san_map)
+    #第二周期
+    # for i in range(len(Drone_route1)):
+    #     folium.PolyLine(Drone_route1[i], color="white", weight=4 ,dash_array="1,5",opacity=1).add_to(san_map)
+    #第三周期
+    # for i in range(len(Drone_route2)):
+    #     folium.PolyLine(Drone_route2[i], color="orange", weight=4 ,dash_array="1,5",opacity=1).add_to(san_map)
+    #第四周期
+    # for i in range(len(Drone_route3)):
+    #     folium.PolyLine(Drone_route3[i], color="yellow", weight=4 ,dash_array="1,5",opacity=1).add_to(san_map)
+    ################################# 绘制无人机的路径 #################################
+    ####################################################画线################################################################
+    ####################################################画图标##############################################################
+    ################################## 在仓库节点处添加一个红色箭头作为标记 #################################
+    folium.Marker(
+        location=tri[0],
+        icon=folium.Icon(icon="arrow-up", color="green")
+    ).add_to(san_map)
+    ################################## 在客户节点处添加一个蓝色箭头作为标记 #################################
+    marker_cluster = plugins.MarkerCluster().add_to(san_map)
+    i=0
+    for lat, lon in zip(la, lo):
+        i=i+1
+        icon = folium.Icon(color='blue', icon='info-sign')  # 自定义图标形状和颜色
+        maker=folium.Marker([lat, lon], icon=icon).add_to(marker_cluster)
+        folium.Marker([lat, lon],
+            icon=folium.DivIcon(html=f'<div3413002 style="font-size: 15px; color: white; font-weight: bold;">{i}</div>')
+        ).add_to(marker_cluster)
+    lat1 = 45.791573 # daowai,
+    lon1 = 126.663706
+    lat2=45.740278#nangang
+    lon2=126.683182
+    lat3=45.70494#xiangfang
+    lon3=126.646256
+    lat4=45.736622#daoli
+    lon4=126.549419
+    P1 = 'Daowai District'
+    P2 = 'Nangang District'
+    P3 = 'Xiangfang District'
+    P4 = 'Daoli District'
+    folium.Marker([lat1, lon1],
+                   icon=folium.DivIcon(html=f'<div style="font-size: 30px; color: white; font-weight: bold;">{P1}</div>')
+                   ).add_to(marker_cluster)
+    folium.Marker([lat2, lon2],
+                  icon=folium.DivIcon(html=f'<div style="font-size: 30px; color: white; font-weight: bold;">{P2}</div>')
+                   ).add_to(marker_cluster)
+    folium.Marker([lat3, lon3],
+                   icon=folium.DivIcon(html=f'<div style="font-size: 30px; color: white; font-weight: bold;">{P3}</div>')
+                   ).add_to(marker_cluster)
+    folium.Marker([lat4, lon4],
+                   icon=folium.DivIcon(html=f'<div style="font-size: 30px; color: white; font-weight: bold;">{P4}</div>')
+                   ).add_to(marker_cluster)
+    ####################################################画图标###############################################################
+    san_map.save('周期性卡车无人机协同配送结果示意图1.html')
+
+def main():
+    Map(Lat,Lon,Lat_1,Lon_1,Lat_2,Lon_2,Lat_3,Lon_3,way_lat,way_lon)
+
+
+if __name__ == '__main__':
+    main()
+
+#其他测试结果，可直接带入测试
+# GOaMEA_chorm = [
+#
+#     # ===== 周期 1 =====
+#     [
+#         [0, 67, 56, 45, 33, 29, 42, 53, 64, 11, 26, 40, 51, 62, 9, 24, 3,
+#          30, 15, 68, 57, 46, 19, 71, 60, 49, 38, 7, 72, 61, 50, 39, 23, 1,
+#          8, 5, 47, 58, 69, 2, 16, 31, 43, 54, 65, 12, 27, 25, 10, 63, 52,
+#          41, 28, 13, 66, 55, 44, 32, 17, 6, 21, 37, 48, 59, 70, 0],
+#
+#         [
+#             [0, 5, 35, 36, 0, 22, 63, 62],       # drone start
+#             [14, 20, 36, 22, 4, 35, 18, 34],     # drone service
+#             [5, 35, 36, 65, 22, 23, 64, 63],     # drone end
+#             [0, 0, 0, 0, 1, 1, 1, 1]             # drone id
+#         ]
+#     ],
+#
+#     # ===== 周期 2 =====
+#     [
+#         [0, 20, 12, 3, 48, 36, 33, 21, 13, 4, 45, 2, 11, 43, 1, 30, 35,
+#          23, 14, 5, 47, 50, 38, 26, 16, 7, 52, 40, 28, 17, 8, 53, 41, 29,
+#          25, 37, 49, 46, 34, 22, 9, 0],
+#
+#         [
+#             [0, 15, 17, 18, 20, 22, 23, 37, 38, 5, 8, 1, 4, 2],     # start
+#             [42, 18, 10, 54, 31, 19, 6, 39, 27, 15, 51, 32, 24, 44],# service
+#             [15, 17, 18, 20, 22, 23, 37, 38, 39, 8, 36, 2, 5, 3],   # end
+#             [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1]              # id
+#         ]
+#     ],
+#
+#     # ===== 周期 3 =====
+#     [
+#         [0, 49, 38, 5, 19, 33, 22, 20, 9, 24, 57, 12, 23, 45, 2, 43, 54,
+#          65, 7, 29, 51, 1, 58, 36, 14, 3, 48, 37, 26, 15, 59, 0],
+#
+#         [
+#             [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 15, 16,
+#              17, 18, 19, 20, 23, 26, 29, 30, 0, 4, 5, 6, 7, 28, 29, 24,
+#              24, 26, 12, 11],                              # start
+#
+#             [60, 27, 16, 30, 44, 11, 31, 42, 13, 35, 46, 34, 56, 32,
+#              21, 10, 18, 40, 62, 47, 25, 4, 41, 63, 8, 55, 66, 53, 64,
+#              17, 6, 39, 50, 52, 28, 61],                  # service
+#
+#             [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 15, 16, 17,
+#              18, 19, 20, 23, 24, 29, 30, 31, 4, 5, 6, 7, 8, 29, 30, 25,
+#              25, 27, 24, 12],                             # end
+#
+#             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+#              0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0,
+#              1, 1, 1, 1]                                  # id
+#         ]
+#     ],
+#
+#     # ===== 周期 4 =====
+#     [
+#         [0, 19, 9, 29, 40, 51, 8, 18, 28, 39, 15, 36, 47, 3, 13, 23, 34,
+#          45, 56, 54, 43, 32, 21, 11, 55, 44, 33, 22, 2, 57, 46, 35, 24,
+#          14, 4, 49, 38, 27, 17, 7, 10, 20, 30, 41, 52, 53, 42, 31, 6,
+#          26, 48, 0],
+#
+#         [
+#             [0, 23, 27, 0, 11, 12, 25],          # start
+#             [1, 12, 16, 25, 5, 50, 37],          # service
+#             [23, 27, 48, 11, 12, 25, 48],        # end
+#             [0, 0, 0, 1, 1, 1, 1]                # id
+#         ]
+#     ]
+# ]
